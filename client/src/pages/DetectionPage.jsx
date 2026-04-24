@@ -162,9 +162,11 @@ const DetectionPage = () => {
 
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-          Voice Deepfake Detection
-        </h1>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight 
+bg-gradient-to-r from-orange-500 via-yellow-400 to-green-400 
+bg-clip-text text-transparent">
+  Voice Deepfake Detection
+</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">
           Upload an audio file or record directly to verify authenticity.
         </p>

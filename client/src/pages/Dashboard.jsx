@@ -36,6 +36,8 @@ const Dashboard = () => {
     { name: 'High Risk', value: stats.fake, color: '#ef4444' },
   ];
 
+  const pieChartData = pieData.filter((item) => item.value > 0);
+
   const timelineData = history.slice().reverse().map((r, i) => ({
     id: i,
     date: new Date(r.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
@@ -142,17 +144,15 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
               <Pie
-                data={pieData}
+                data={pieChartData}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
                 outerRadius={90}
                 paddingAngle={2}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                labelLine={false}
               >
-                {pieData.map((entry, idx) => (
+                {pieChartData.map((entry, idx) => (
                   <Cell key={idx} fill={entry.color} stroke="#fff" strokeWidth={2} />
                 ))}
               </Pie>

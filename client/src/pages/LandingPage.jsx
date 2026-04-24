@@ -95,7 +95,7 @@ const LandingPage = () => {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                to="/dashboard"
+                to="/features"
                 className="inline-flex items-center justify-center rounded-full border border-white/20 glass-card px-8 py-3 font-semibold transition-colors hover:bg-white/10"
               >
                 Explore Features
