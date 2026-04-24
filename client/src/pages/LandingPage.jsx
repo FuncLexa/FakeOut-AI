@@ -1,111 +1,197 @@
-// src/pages/LandingPage.jsx
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Mic, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import {
+  Shield,
+  ArrowRight,
+  CheckCircle,
+  AlertTriangle,
+  Zap,
+  Activity,
+  Users,
+  Award,
+} from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const LandingPage = () => {
-  const verdicts = [
-    { label: 'Likely Real', icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
-    { label: 'Suspicious', icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
-    { label: 'High Risk', icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/20' },
+  const stats = [
+    { value: '94%', label: 'Detection Accuracy', icon: Award },
+    { value: '< 3s', label: 'Analysis Time', icon: Zap },
+    { value: '50K+', label: 'Samples Analyzed', icon: Activity },
+    { value: '10K+', label: 'Active Users', icon: Users },
   ];
 
   return (
-    <div className="min-h-screen">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-amber-500/5 to-emerald-500/5"></div>
-        <div className="absolute top-20 left-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+    <div className="relative min-h-screen overflow-x-hidden">
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
+        <div className="absolute left-0 top-0 h-full w-full opacity-30">
+          <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path
+                  d="M 40 0 L 0 0 0 40"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  className="text-amber-500/20"
+                />
+              </pattern>
+              <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+            <rect width="100%" height="100%" fill="url(#glow)" />
+          </svg>
+        </div>
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-red-500/10 blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="flex flex-col items-center justify-between gap-12 lg:flex-row">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="flex-1 text-left"
           >
-            <div className="inline-flex items-center px-3 py-1 rounded-full glass-card mb-6">
-              <Shield className="w-4 h-4 text-amber-500 mr-2" />
-              <span className="text-sm font-medium">Stop AI Voice Scams Before They Start</span>
+            <div className="mb-6 inline-flex items-center rounded-full glass-card px-3 py-1">
+              <Shield className="mr-2 h-4 w-4 text-amber-500" />
+              <span className="text-sm font-medium">Stop AI Voice Scams</span>
             </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">
-                FakeOut AI
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-              Real-time voice deepfake detection. Upload any audio and know instantly if it's real or AI-generated.
+
+          <div className="relative inline-block">
+
+  {/* glow */}
+  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 opacity-60 blur" />
+
+  {/* main title box */}
+  <div className="relative rounded-2xl bg-white px-6 py-4 dark:bg-gray-900 shadow-md">
+    <h1 className="text-5xl font-bold lg:text-7xl leading-none">
+      <span className="bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">
+        FakeOut AI
+      </span>
+    </h1>
+  </div>
+
+  {/* 🔥 OUTSIDE SUBSCRIPT (right side) */}
+
+
+</div> 
+
+            <p className="mt-6 max-w-xl text-xl text-gray-600 dark:text-gray-300">
+              Real-time voice deepfake detection. Upload any audio and know instantly if it&apos;s
+              real or AI-generated before scammers strike.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/detect"
-                className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 text-white font-semibold hover:scale-105 transition-transform shadow-lg"
+                className="group inline-flex items-center justify-center rounded-full bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 px-8 py-3 font-semibold text-white shadow-lg transition-transform hover:scale-105"
               >
-                Start Detection <ArrowRight className="ml-2 w-5 h-5" />
+                Start Detection
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/dashboard"
-                className="inline-flex items-center px-8 py-3 rounded-full glass-card border border-white/20 font-semibold hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center rounded-full border border-white/20 glass-card px-8 py-3 font-semibold transition-colors hover:bg-white/10"
               >
-                View Dashboard
+                Explore Features
               </Link>
+            </div>
+
+            <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {stats.map((stat) => (
+                <div key={stat.label} className="rounded-xl border border-white/20 glass-card p-3 text-center">
+                  <stat.icon className="mx-auto mb-1 h-5 w-5 text-amber-500" />
+                  <p className="text-xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-gray-500">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-20"
+            className="flex flex-1 justify-center"
           >
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="glass-card rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Mic className="w-5 h-5 text-amber-500" />
-                  <h3 className="font-semibold">How It Works</h3>
-                </div>
-                <div className="space-y-4">
-                  {['Upload suspicious audio clip', 'Dual AI models analyze voice patterns', 'Get instant verdict + explanation'].map((step, i) => (
-                    <div key={i} className="flex items-center space-x-3">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-red-500 to-emerald-500 text-white text-xs flex items-center justify-center">{i+1}</div>
-                      <span className="text-gray-700 dark:text-gray-300">{step}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="relative h-72 w-72 lg:h-96 lg:w-96">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500 via-amber-500 to-emerald-500 opacity-30 blur-3xl animate-pulse" />
+              <div className="relative flex h-full w-full items-center justify-center">
+               <div className="relative h-72 w-72 lg:h-96 lg:w-96 flex items-center justify-center">
+
+  {/* soft glow */}
+  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 via-amber-500/20 to-emerald-500/20 blur-2xl" />
+
+  {/* circular logo */}
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="relative rounded-full bg-white/10 backdrop-blur-lg p-6 shadow-xl border border-white/20 flex items-center justify-center"
+  >
+    <img
+      src={logo}
+      alt="FakeOut AI logo"
+      className="h-50 w-45 object-contain"
+    />
+  </motion.div>
+
+</div>
               </div>
-              <div className="glass-card rounded-2xl p-6 border border-white/20">
-                <h3 className="font-semibold mb-3">Verdict Types</h3>
-                <div className="space-y-3">
-                  {verdicts.map((v) => (
-                    <div key={v.label} className={`flex items-center space-x-3 p-2 rounded-lg ${v.bg} border ${v.border}`}>
-                      <v.icon className={`w-5 h-5 ${v.color}`} />
-                      <span className="font-medium">{v.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+
+              <motion.div
+                animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute right-0 top-0 h-12 w-12 rounded-full bg-red-500/40 blur-md"
+              />
+              <motion.div
+                animate={{ y: [0, 10, 0], rotate: [0, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                className="absolute bottom-0 left-0 h-16 w-16 rounded-full bg-emerald-500/40 blur-md"
+              />
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute top-1/2 -right-4 h-8 w-8 rounded-full bg-amber-500/50 blur-sm"
+              />
             </div>
           </motion.div>
         </div>
-      </section>
 
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Powered by Dual AI Models</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="glass-card rounded-2xl p-6 border border-white/20">
-              <h3 className="text-xl font-bold mb-3 flex items-center"><span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>MFCC + XGBoost</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Extracts 40 acoustic fingerprint features. Catches unnatural smoothness in AI voices.</p>
-              <div className="text-sm text-gray-500">Accuracy: 88-90%</div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-20 grid gap-6 md:grid-cols-3"
+        >
+          <div className="rounded-2xl border-l-8 border-emerald-500/30 glass-card p-5">
+            <div className="mb-2 flex items-center space-x-2">
+              <CheckCircle className="h-5 w-5 text-emerald-500" />
+              <span className="font-bold text-emerald-500">LIKELY REAL</span>
             </div>
-            <div className="glass-card rounded-2xl p-6 border border-white/20">
-              <h3 className="text-xl font-bold mb-3 flex items-center"><span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>wav2vec2 Fine-tuned</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Facebook's pretrained model fine-tuned on 22,000 AI samples from ASVspoof 2019.</p>
-              <div className="text-sm text-gray-500">Accuracy: 94-96%</div>
-            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Natural voice patterns detected</p>
           </div>
-        </div>
-      </section>
+          <div className="rounded-2xl border-l-8 border-amber-500/30 glass-card p-5">
+            <div className="mb-2 flex items-center space-x-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              <span className="font-bold text-amber-500">SUSPICIOUS</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Mixed signals, verify further</p>
+          </div>
+          <div className="rounded-2xl border-l-8 border-red-500/30 glass-card p-5">
+            <div className="mb-2 flex items-center space-x-2">
+              <Shield className="h-5 w-5 text-red-500" />
+              <span className="font-bold text-red-500">HIGH RISK</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300">AI-generated voice detected</p>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

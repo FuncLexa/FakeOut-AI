@@ -1,9 +1,10 @@
 import { useDetection } from '../context/DetectionContext';
 import { CheckCircle, AlertTriangle, Shield, Download, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { FileText } from 'lucide-react';
 
 const VerdictDisplay = ({ result }) => {
-  const { downloadResult } = useDetection();
+const { downloadJSON, downloadPDF } = useDetection();
 
   const getVerdictConfig = () => {
     switch (result.verdict) {
@@ -144,13 +145,23 @@ const VerdictDisplay = ({ result }) => {
         </ResponsiveContainer>
       </div>
 
-      <button
-        onClick={() => downloadResult(result)}
-        className="glass-card flex w-full items-center justify-center space-x-2 rounded-xl border border-white/20 py-3 transition-colors hover:bg-white/5"
-      >
-        <Download className="h-4 w-4" />
-        <span>Download Result Report</span>
-      </button>
+     <div className="flex gap-4 mt-6">
+  <button
+    onClick={() => downloadJSON(result)}
+    className="flex-1 py-3 rounded-xl glass-card border border-white/20 flex items-center justify-center space-x-2 hover:bg-white/5 transition-colors"
+  >
+    <Download className="w-4 h-4" />
+    <span>Export as JSON</span>
+  </button>
+
+  <button
+    onClick={() => downloadPDF(result)}
+    className="flex-1 py-3 rounded-xl glass-card border border-white/20 flex items-center justify-center space-x-2 hover:bg-white/5 transition-colors"
+  >
+    <FileText className="w-4 h-4" />
+    <span>Export as PDF</span>
+  </button>
+</div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-// src/App.jsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { DetectionProvider } from './context/DetectionContext';
@@ -7,6 +7,9 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import DetectionPage from './pages/DetectionPage';
 import HistoryPage from './pages/HistoryPage';
+import VisualizePage from './pages/VisualizePage';
+import FeaturesPage from './pages/FeaturesPage';
+import TechnologyPage from './pages/TechnologyPage';
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/detect" element={<DetectionPage />} />
               <Route path="/history" element={<HistoryPage />} />
+              <Route path="/visualize" element={<VisualizePage />} />
+              <Route path="/features" element={<FeaturesPage />} />
+<Route path="/technology" element={<TechnologyPage />} />
             </Routes>
           </div>
         </Router>

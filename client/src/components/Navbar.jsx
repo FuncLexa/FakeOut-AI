@@ -2,19 +2,27 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Shield, LayoutDashboard, Mic, History, Sun, Moon, Menu, X } from 'lucide-react';
 
+import { 
+  Shield, LayoutDashboard, Mic, History, 
+  Sun, Moon, Menu, X, BarChart3, 
+  Sparkles, Cpu 
+} from 'lucide-react';
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
-    { path: '/', label: 'Home', icon: Shield },
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/detect', label: 'Detect', icon: Mic },
+const navItems = [
+  { path: '/', label: 'Home', icon: Shield },
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/detect', label: 'Detect', icon: Mic },
+
+  { path: '/visualize', label: 'Visualize', icon: BarChart3 },
     { path: '/history', label: 'History', icon: History },
-  ];
+  { path: '/features', label: 'Features', icon: Sparkles },
+{ path: '/technology', label: 'Tech', icon: Cpu },
+];
 
   const isActive = (path) => location.pathname === path;
 
