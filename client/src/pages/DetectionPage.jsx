@@ -6,6 +6,7 @@ import { useDetection } from '../context/DetectionContext';
 import WaveformVisualizer from '../components/WaveformVisualizer';
 import AudioRecorder from '../components/AudioRecorder';
 import VerdictDisplay from '../components/VerdictDisplay';
+import LexaBot from '../components/LexaBot';
 import { 
   Upload, Mic, Play, Volume2, Loader2, Sparkles, 
   FileJson, FileText, CheckCircle, AlertCircle, X,
@@ -317,6 +318,8 @@ const DetectionPage = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {currentResult ? <LexaBot result={currentResult} /> : null}
     </div>
   );
 };
