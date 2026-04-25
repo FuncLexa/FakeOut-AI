@@ -7,23 +7,34 @@ const AudioRecorder = ({ onRecordingComplete }) => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [recordingUrl, setRecordingUrl] = useState(null);
   const audioRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const processorRef = useRef(null);
+  const chunksRef = useRef([]);
 
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+      
+      // Use Web Audio API to record as WAV
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+      const source = audioContext.createMediaStreamSource(stream);
+      const processor = audioContext.createScriptProcessor(4096, 1, 1);
+      
       const chunks = [];
-
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' });
-        const url = URL.createObjectURL(blob);
-        setRecordingUrl(url);
-        onRecordingComplete(blob);
+      
+      processor.onaudioprocess = (e) => {
+        const inputData = e.inputBuffer.getChannelData(0);
+        chunks.push(new Float32Array(inputData));
       };
-
-      recorder.start();
-      setMediaRecorder(recorder);
+      
+      source.connect(processor);
+      processor.connect(audioContext.destination);
+      
+      audioContextRef.current = audioContext;
+      processorRef.current = processor;
+      chunksRef.current = chunks;
+      
+      setMediaRecorder({ stream, source });
       setIsRecording(true);
     } catch (err) {
       console.error('Microphone access denied:', err);
@@ -32,8 +43,63 @@ const AudioRecorder = ({ onRecordingComplete }) => {
 
   const stopRecording = () => {
     if (mediaRecorder && isRecording) {
-      mediaRecorder.stop();
-      mediaRecorder.stream.getTracks().forEach(track => track.stop());
+      const { stream, source } = mediaRecorder;
+      
+      // Stop the audio processing
+      processorRef.current.disconnect();
+      source.disconnect();
+      audioContextRef.current.close();
+      
+      // Convert chunks to WAV
+      const chunks = chunksRef.current;
+      const sampleRate = 16000;
+      const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+      const result = new Float32Array(totalLength);
+      let offset = 0;
+      
+      for (const chunk of chunks) {
+        result.set(chunk, offset);
+        offset += chunk.length;
+      }
+      
+      // Convert to 16-bit PCM
+      const buffer = new ArrayBuffer(44 + totalLength * 2);
+      const view = new DataView(buffer);
+      
+      // WAV header
+      const writeString = (offset, string) => {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      };
+      
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + totalLength * 2, true);
+      writeString(8, 'WAVE');
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeString(36, 'data');
+      view.setUint32(40, totalLength * 2, true);
+      
+      // Write audio data
+      for (let i = 0; i < totalLength; i++) {
+        const sample = Math.max(-1, Math.min(1, result[i]));
+        view.setInt16(44 + i * 2, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+      }
+      
+      const blob = new Blob([buffer], { type: 'audio/wav' });
+      const url = URL.createObjectURL(blob);
+      setRecordingUrl(url);
+      onRecordingComplete(blob);
+      
+      // Stop the stream
+      stream.getTracks().forEach(track => track.stop());
       setIsRecording(false);
     }
   };

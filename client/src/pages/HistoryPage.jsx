@@ -72,12 +72,12 @@ const HistoryPage = () => {
                     {item.filename || 'Unknown audio'}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-                    {item.explanation.substring(0, 120)}...
+                    {item.explanation ? `${item.explanation.substring(0, 120)}...` : 'No explanation available'}
                   </p>
                   <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
-                    <span>Confidence: {item.confidence}%</span>
-                    <span>MFCC: {item.model1.confidence}%</span>
-                    <span>wav2vec2: {item.model2.confidence}%</span>
+                    <span>Confidence: {item.confidence || 0}%</span>
+                    <span>MFCC: {item.model1?.confidence || 0}%</span>
+                    <span>wav2vec2: {item.model2?.confidence || 0}%</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

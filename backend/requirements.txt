@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+joblib
+numpy
+shap
+librosa
+soundfile
+scikit-learn
+xgboost
+huggingface_hub
+openai
+noisereduce
+torch
+transformers
+pydub

@@ -60,11 +60,17 @@ const DetectionPage = () => {
     handleFileUpload(file);
   };
 
-  const loadDemoClip = (type) => {
-    const mockFile = new File([], `${type}.wav`, { type: 'audio/wav' });
-    Object.defineProperty(mockFile, 'name', { value: `demo-${type}.wav` });
-    handleFileUpload(mockFile);
-    simulateDetection(type);
+  const loadDemoClip = async (type) => {
+    try {
+      const response = await fetch(`/samples/${type}_sample.wav`);
+      if (!response.ok) throw new Error('Failed to load demo');
+      const blob = await response.blob();
+      const file = new File([blob], `demo-${type}.wav`, { type: 'audio/wav' });
+      handleFileUpload(file);
+    } catch (error) {
+      console.error('Error loading demo:', error);
+      showToast('Failed to load demo sample', 'error');
+    }
   };
 
   const simulateDetection = (type) => {
@@ -109,8 +115,57 @@ const DetectionPage = () => {
     }, 2000);
   };
 
-  const startAnalysis = () => {
-    if (audioFile && !isAnalyzing) simulateDetection('analyze');
+  const startAnalysis = async () => {
+    if (!audioFile || isAnalyzing) return;
+    setIsAnalyzing(true);
+    showToast('Uploading and analyzing...', 'info');
+
+    const formData = new FormData();
+    formData.append('file', audioFile);
+
+    console.log('Starting analysis with file:', audioFile.name);
+
+    try {
+      console.log('Sending request to /api/predict');
+      const response = await fetch('/api/predict', {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Response data:', data);
+      
+      if (data.error) {
+        showToast(data.error, 'error');
+        setIsAnalyzing(false);
+        return;
+      }
+
+      const mappedResult = {
+        verdict: data.risk_level === 'low' ? 'likely_real' : (data.risk_level === 'high' ? 'high_risk' : 'suspicious'),
+        confidence: data.confidence,
+        model1: { name: 'MFCC + XGBoost', prediction: data.model1_verdict, confidence: data.model1_confidence },
+        model2: { name: 'wav2vec2', prediction: data.model2_verdict, confidence: data.model2_confidence },
+        explanation: data.explanation,
+        timestamp: data.timestamp || new Date().toISOString(),
+        filename: data.filename || audioFile.name,
+      };
+
+      setCurrentResult(mappedResult);
+      addToHistory(mappedResult);
+      showToast('Analysis complete', 'success');
+    } catch (error) {
+      console.error('Analysis error:', error);
+      showToast('Error connecting to server', 'error');
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleDownloadJSON = () => {
